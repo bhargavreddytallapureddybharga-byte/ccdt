@@ -1,0 +1,23 @@
+
+workflows:
+  android-apk:
+    name: BhashaSetu AI APK
+    max_build_duration: 120
+    instance_type: mac_mini_m2
+
+    scripts:
+      - name: Download Gradle
+        script: |
+          curl -fL https://services.gradle.org/distributions/gradle-8.9-bin.zip -o /tmp/gradle.zip
+          unzip -q /tmp/gradle.zip -d /tmp
+
+      - name: Configure Android SDK
+        script: |
+          echo "sdk.dir=$ANDROID_SDK_ROOT" > local.properties
+
+      - name: Build APK
+        script: |
+          /tmp/gradle-8.9/bin/gradle assembleDebug
+
+    artifacts:
+      - app/build/outputs/apk/debug/*.apk
